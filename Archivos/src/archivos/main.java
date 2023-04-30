@@ -4,7 +4,7 @@ import java.io.FileWriter;
 public class main {
 
     public static void main(String[] args) {
-		MyFrame_6 frame=new MyFrame_6();
+		MyFrame_7 frame=new MyFrame_7();
 	}
 
 }

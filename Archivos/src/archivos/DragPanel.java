@@ -1,5 +1,6 @@
 package archivos;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -23,7 +24,8 @@ public class DragPanel extends JPanel{
 		DragListener dragListener = new DragListener();
 		this.addMouseListener(clickListener);
 		this.addMouseMotionListener(dragListener);
-	
+		this.setBackground(Color.black);
+		
 	}
 	
 	public void paintComponent(Graphics g) {
