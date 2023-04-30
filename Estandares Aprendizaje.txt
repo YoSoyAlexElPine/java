@@ -1,0 +1,23 @@
+9. Excepciones y manejo de errores
+
+10. Entrada y salida de datos (lectura y escritura de archivos)
+
+11. Concurrencia y programación multihilo
+
+12. Anotaciones y reflexión
+
+13. Pruebas unitarias y TDD (Desarrollo dirigido por pruebas)
+
+14. Programación de redes (sockets, protocolos TCP/IP)
+
+15. Programación de GUI (Interfaces gráficas de usuario) con Swing o JavaFX
+
+16. Persistencia de datos (JDBC, JPA, Hibernate)
+
+17. Desarrollo web (Servlets, JSP, JSF, Spring MVC)
+
+18. Servicios web (RESTful, SOAP)
+
+19. Seguridad en Java (SSL, encriptación, autenticación y autorización)
+
+20. Patrones de diseño de software.
