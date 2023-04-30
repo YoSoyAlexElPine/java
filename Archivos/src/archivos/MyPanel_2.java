@@ -13,7 +13,7 @@ public class MyPanel_2 extends JPanel implements ActionListener{
 	Image enemy;
 	Image backgroundImage;
 	Timer timer;
-	int xVelocity=10; 
+	int xVelocity=3; 
 	int yVelocity=1; 
 	int x=0;
 	int y=0;
@@ -39,7 +39,6 @@ public class MyPanel_2 extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(x>=PANEL_WIDTH-enemy.getWidth(null) || x<0) {
 			xVelocity=xVelocity*-1;
-
 		}
 		
 		x=x+xVelocity;
