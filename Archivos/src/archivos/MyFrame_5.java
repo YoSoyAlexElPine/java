@@ -20,7 +20,7 @@ public class MyFrame_5 extends JFrame implements MouseListener{
 		label.setBounds(0,0,100,100);
 		label.setBackground(Color.red);
 		label.setOpaque(true);
-		this.addMouseListener(this);
+		label.addMouseListener(this);
 		
 		this.add(label);
 		this.setVisible(true);
