@@ -46,11 +46,11 @@ public class MyPanel extends JPanel{
 		//g2D.setPaint(Color.white);
 		//g2D.fillArc(0, 0, 100, 100, 180, 180);
 		
-		//int[] xPoints = {150,250,350};
-		//int[] yPoints = {300,150,300};
-		//g2D.setPaint(Color.yellow);
-		//g2D.drawPolygon(xPoints,yPoints,3);
-		//g2D.fillPolygon(xPoints,yPoints,3);
+		int[] xPoints = {150,250,350};
+		int[] yPoints = {300,150,300};
+		g2D.setPaint(Color.yellow);
+		g2D.drawPolygon(xPoints,yPoints,3);
+		g2D.fillPolygon(xPoints,yPoints,3);
 		
 		//g2D.setPaint(Color.magenta);
 		//g2D.setFont(new Font("Ink free",Font.BOLD,50));
