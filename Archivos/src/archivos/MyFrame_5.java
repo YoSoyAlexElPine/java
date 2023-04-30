@@ -20,7 +20,7 @@ public class MyFrame_5 extends JFrame implements MouseListener{
 		label.setBounds(0,0,100,100);
 		label.setBackground(Color.red);
 		label.setOpaque(true);
-		label.addMouseListener(this);
+		this.addMouseListener(this);
 		
 		this.add(label);
 		this.setVisible(true);
@@ -37,7 +37,7 @@ public class MyFrame_5 extends JFrame implements MouseListener{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+	
 		System.out.println("Has hecho click");
 		
 	}
@@ -45,25 +45,25 @@ public class MyFrame_5 extends JFrame implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		System.out.println("Acabas de hacer clic");
-		
+		label.setBackground(Color.yellow);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		System.out.println("Acabas de soltar el clic");
-		
+		label.setBackground(Color.green);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		System.out.println("Has entrado al cuadrado");
-		
+		label.setBackground(Color.blue);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		System.out.println("Has salido del cuadrado rojo");
-		
+		label.setBackground(Color.red);
 	}
 
 }

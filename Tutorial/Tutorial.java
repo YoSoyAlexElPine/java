@@ -8,9 +8,7 @@ public class Tutorial {
             a=scanner.nextInt();
             b=scanner.nextInt();
 
-            do {
-                
-            } while (condition);
+            
         }
         System.out.println(suma(a,b));
         Animal.funcion();
