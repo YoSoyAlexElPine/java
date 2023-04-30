@@ -24,14 +24,6 @@ public class MyFrame_5 extends JFrame implements MouseListener{
 		
 		this.add(label);
 		this.setVisible(true);
-	
-	
-	
-	
-	
-	
-	
-	
 	}
 	
 	
