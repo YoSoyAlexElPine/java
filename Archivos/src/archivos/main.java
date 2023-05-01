@@ -5,6 +5,9 @@ public class main {
     	
 		new MyFrame_8();
 		
+		
+		
+		
 	}
 
 }
