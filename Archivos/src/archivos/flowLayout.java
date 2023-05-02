@@ -15,11 +15,10 @@ public class flowLayout implements ActionListener{
 	JFrame frame=new JFrame();
 	JFrame frame2=new JFrame();
 public static  void correr() {
-	
 
-	
 	JFrame frame=new JFrame();
 	JFrame frame2=new JFrame();
+	
 	frame2.setSize(100,100);
 	frame2.setBackground(Color.red);
 	frame2.setVisible(false);
