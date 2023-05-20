@@ -15,18 +15,33 @@ public class pruebas extends JFrame implements ActionListener{
 	JButton b2= new JButton("Boton 1");
 	JButton b3= new JButton("Boton 1");
 	
-	JLabel l1=new JLabel();
+	JLabel l1,l2=new JLabel();
 	
-	int num=0;
+	Timer timer=new Timer(1000, null);
 	
-	pruebas() {
+	int num=180;
+	
+	pruebas() throws InterruptedException {
 		
-
 		
-		l1.setText(String.valueOf(num));
+	      /*timer = new Timer(1000, new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	            	num--;
+	                int minutos = num / 60;
+	                int segundosRestantes = num % 60;
+	                l2.setText(String.format("%d:%02d", minutos, segundosRestantes));
+	                if (num == 0) {
+	                    timer.stop();
+	                    l2.setText("¡Tiempo terminado!");
+	                }
+	            }
+	        });
+		
+		
+		
+		//l1.setText(String.valueOf(num));
 	
 		JFrame frame=new JFrame();
-		
 		JPanel panel1=new JPanel();
 		JPanel panel4=new JPanel();
 		JPanel panel5=new JPanel();
@@ -49,24 +64,51 @@ public class pruebas extends JFrame implements ActionListener{
 		frame.add(panel1,BorderLayout.NORTH);
 		frame.add(panel4, BorderLayout.SOUTH);
 		frame.add(panel5,BorderLayout.CENTER);
+		
+		l2.setVisible(true);
+		l2.setForeground(Color.black);
 
-		panel1.add(l1);
+		panel1.add(l2);
 		panel4.add(b1);
 		panel4.add(b2);
 		panel4.add(b3);
+		panel5.add(l2);
 		
 		b1.addActionListener(this);
+	      */
 		
+		int segundos=10;
+		
+		
+	
+		this.setSize(500,500);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		
+		l2.setText("180");
+		l2.setFont(new Font(null,Font.BOLD,40));
+		l2.setHorizontalAlignment(JLabel.CENTER);
+		l2.setVerticalAlignment(JLabel.CENTER);
+		
+		this.add(l2);
+		this.setVisible(true);
+		segundos++;
+		do {
+			segundos--;
+			l2.setText(Integer.toString(segundos));
+			Thread.sleep(1000);
+		} while (segundos>0);
+		l2.setText("Se termino :D");
+		
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource()==b1) {
-			num=num+1000000;
-			l1.setText(Integer.toString(num));
-		}
+		// TODO Auto-generated method stub
 		
 	}
+
 	
 	
 }

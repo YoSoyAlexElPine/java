@@ -19,10 +19,7 @@ public class menu extends JFrame implements ActionListener{
 	ImageIcon git = new ImageIcon("github.png");
 	ImageIcon proceso = new ImageIcon("proceso.png");
 	
-	JButton buscaminas = new JButton();
-	JButton calculadora= new JButton();
-	JButton aimHero= new JButton();
-	JButton contadorClick=new JButton();
+	JButton buscaminas,calculadora,aimHero,contadorClick,tresRaya = new JButton();
 	
 	JPanel panelN=new JPanel();
 	JPanel panelC=new JPanel();
@@ -33,7 +30,7 @@ public class menu extends JFrame implements ActionListener{
 		this.setTitle("Menu");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(420,420);
-		this.setMinimumSize(new Dimension(400,400));
+		//this.setMinimumSize(new Dimension(400,400));
 		this.setIconImage(git.getImage());
 		getContentPane().setBackground(Color.BLACK);
 
@@ -60,6 +57,9 @@ public class menu extends JFrame implements ActionListener{
 		contadorClick=new boton("Contador Clicks");
 		contadorClick.addActionListener(this);
 		
+		tresRaya=new boton("Tres en raya");
+		tresRaya.addActionListener(this);
+		
 		panelN.add(label);
 		panelN.setBackground(Color.black);
 		panelN.setVisible(true);
@@ -69,11 +69,14 @@ public class menu extends JFrame implements ActionListener{
 		panelC.add(calculadora);
 		panelC.add(buscaminas);
 		panelC.add(contadorClick);
+		panelC.add(tresRaya);
 		panelC.setLayout(new GridLayout(3,3,10,10));
 		panelC.setVisible(true);
 
 		this.add(panelN, BorderLayout.NORTH);
 		this.add(panelC, BorderLayout.CENTER);
+		
+		panelC.setMaximumSize(new Dimension(100,100));
 	
 		//this.add(buscaminas);
 		//this.add(calculadora);
@@ -84,22 +87,30 @@ public class menu extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==aimHero) {
-			JOptionPane.showMessageDialog(
-					null,
-					"Prectica del aim en construccion",
-					"Panel de informacion",
-					JOptionPane.INFORMATION_MESSAGE,
-					proceso
-					);
+			try {
+				new aimHero();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		if(e.getSource()==calculadora) {
-			JOptionPane.showMessageDialog(null,"Calculadora en construccion");
+			new Calculadora();
 		}
 		if(e.getSource()==buscaminas) {
 			JOptionPane.showMessageDialog(null,"JUEGAZO, pero en construccion");
 		}
 		if(e.getSource()==contadorClick) {
 			new ContadorClicks();
+		}
+		if(e.getSource()==tresRaya) {
+			JOptionPane.showMessageDialog(
+					null,
+					"Juego tres taya en proceso",
+					"Panel de informacion",
+					JOptionPane.NO_OPTION,
+					proceso
+					);
 		}
 		
 	}

@@ -17,6 +17,7 @@ public class TransporteAPSapp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        System.out.println(4.99999999999999);
 
         //Variables y asigancion de datos
         int aux1, aux2, aux3;

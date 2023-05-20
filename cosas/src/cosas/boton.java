@@ -11,9 +11,8 @@ import javax.swing.JOptionPane;
 
 public class boton extends JButton{
 
-	/**
-	 * 
-	 */
+	public int valor=0;
+	
 	boton (String titulo) {
 		this.setText(titulo);
 		this.setBackground(Color.white);
@@ -21,6 +20,20 @@ public class boton extends JButton{
 		this.setFocusable(false);
 		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+	
+	boton (String titulo,int valor) {
+		this.valor=valor;
+		this.setText(titulo);
+		this.setBackground(Color.white);
+		this.setForeground(Color.black);
+		this.setFocusable(false);
+		this.setBorder(BorderFactory.createEmptyBorder());
+		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+	
+	public int valor() {
+		return this.valor;
 	}
 
 }

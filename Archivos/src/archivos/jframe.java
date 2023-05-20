@@ -85,7 +85,7 @@ public static void panels() {
 }
 
 public static void boton() {
-	MyFrame frame=new MyFrame();
+	//MyFrame frame=new MyFrame();
 }
 
 }
