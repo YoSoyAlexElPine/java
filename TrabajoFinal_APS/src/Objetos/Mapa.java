@@ -1,4 +1,4 @@
-package funciones;
+package Objetos;
 
 import java.util.Iterator;
 

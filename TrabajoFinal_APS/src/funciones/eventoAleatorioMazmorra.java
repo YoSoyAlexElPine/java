@@ -4,6 +4,8 @@
  */
 package funciones;
 
+import Objetos.Hostilidad;
+
 /**
  *
  * @author JoseVi

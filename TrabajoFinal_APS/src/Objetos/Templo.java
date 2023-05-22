@@ -1,5 +1,5 @@
 
-package funciones;
+package Objetos;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,7 +12,7 @@ import java.util.*;
  * @author b03-10t
  */
 public class Templo extends Escenario {
-	protected final String descripcion="""
+	public static final String descripcion="""
 			Los templos aqui son lugar abandonados con grandes reservas de oro pero habitado por un Dusknoir.
 			Los Dusknoir son especies pasivas que no salen de su habitad, tranquilas pero muy curiosas y con gran cultura.
 			Su especie habito la tierra antes que nosotros, sus padres, mientras ellos vivian tranquilamente en su casa sin salir, y tan solo leyendo libros.
@@ -49,7 +49,7 @@ public class Templo extends Escenario {
 		System.out.println(preguntas[0][9]);
 	}
 
-	public boolean preguntar() throws IOException {
+	public void preguntar() throws IOException, InterruptedException {
 		
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		
@@ -58,21 +58,28 @@ public class Templo extends Escenario {
 		String respuesta;
 		
 		System.out.println("""
-				Vas ha hacer 5 preguntas.
-				Tan solo necesitas responder bien a 3 preguntas asi que empezemos.
+				-------------------------------------------------------------------
+				-                      Informacion                                -
+				-------------------------------------------------------------------
+				- Vas ha hacer 5 preguntas.                                       -
+				- Necesitas responder bien a 3 preguntas, empezemos.              -
+				-------------------------------------------------------------------
 				""");
 		
 		for (int i = 0; i < 5; i++) {
-			pregunta=(int)(Math.random()*preguntas.length);
+			pregunta=(int)(Math.random()*preguntas[0].length);
 			
 			System.out.println((i+1)+". "+preguntas[0][pregunta]);
 			respuesta=reader.readLine();
-			if (respuesta.toUpperCase()==preguntas[1][pregunta].toUpperCase()) {
+			if (respuesta.toUpperCase().equals(preguntas[1][pregunta].toUpperCase())) {
 				aciertos++;
 				System.out.println("Correcto");
 			} else {
 				System.out.println("Mal, muy mal");
+				System.out.println("La respuesta correcta era "+preguntas[1][pregunta]);
+				
 			}
+			Thread.sleep(1000);
 			if (i!=4) {
 				System.out.println("Siguiente pregunta");
 			}
@@ -100,6 +107,7 @@ public class Templo extends Escenario {
 		default:
 			break;
 		}
+		Thread.sleep(1000);
 		if (aciertos>=3) {
 			hostilidad=Hostilidad.PASIVA;
 		}
@@ -107,8 +115,6 @@ public class Templo extends Escenario {
 			hostilidad=Hostilidad.AMISTOSA;
 		}
 		
-		
-		return false;
 	}
 
 	@Override
@@ -128,6 +134,7 @@ public class Templo extends Escenario {
 		int aleatorio=(int)(Math.random()*5);
 		int aleatorioEnciclopedia=(int)(Math.random()+100*69);
 		
+		if (hostilidad==Hostilidad.AMISTOSA) {
 		switch (aleatorio) {
 		case 0:
 			System.out.println("Estaba dormido echanodme la sisesta pero ahora estoy a tope XD");
@@ -153,18 +160,36 @@ public class Templo extends Escenario {
 			System.out.println("La mejor de todas las 9999 restantes sin duda.");
 			break;
 		}
+		} else {
+			System.out.println("Me temo de que aun no teneis la suficiente confianza");
+			System.out.println("Quiza si respondes a sus preguntas hos haceis amigos");
+		}
 		
 	}
 	
 	@Override
 	public void menuOpciones() {
 		System.out.println("""
-				
+				----------------------------------
+				-		 Templo opciones         -
+				----------------------------------
+				- 1. Investigar                  -
+				- 2. Consquistar                 -
+				- 3. Juego preguntas             -
+				- 4. Preguntarle que tal         -
+				- 5. Informacion                 -
+				----------------------------------
+				- 0. Salir                       -
+				----------------------------------
 				""");
 		
 		
 		
 	}
+	public String getNombre() {
+		return nombre;
+	}
+
 
 	public String[][] generarPreguntas() {
 		

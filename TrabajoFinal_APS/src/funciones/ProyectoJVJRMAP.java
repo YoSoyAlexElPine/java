@@ -1,30 +1,26 @@
 package funciones;
 
-import java.util.Scanner;
+import java.io.IOException;
+
+import Objetos.Mapa;
+
 import static funciones.FuncionesGenerales.*;
 
 public class ProyectoJVJRMAP {
 
     
-    public static void main(String[] args) {
-    	Mapa mapa=new Mapa();
-    	
-    	mapa.dibujar();
-    	
+    public static void main(String[] args) throws NumberFormatException, IOException {	
         int opc;
         boolean salir = false;
-        @SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
         do {
            menu();
-            opc = scanner.nextInt();
+            opc = FuncionesGenerales.brInt("Introduce una opcion ");
             System.out.println("");
             switch (opc) {
                 case 1 -> {
-                	
+                	System.out.println("HOla mundo");
                 }
                 case 2 -> {	
-                    menuTorre();
                 }
                 case 3 -> {
                     System.out.println("EN DESARROLLO");

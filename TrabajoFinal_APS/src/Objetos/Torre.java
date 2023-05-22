@@ -1,18 +1,20 @@
-package funciones;
+package Objetos;
 
 import java.io.*;
-import java.util.Scanner;
-import static funciones.Colores.ANSI_BLUE;
-import static funciones.Colores.ANSI_GREEN;
-import static funciones.Colores.ANSI_RED;
+
+import funciones.FuncionesGenerales;
+
+import static funciones.Colores.*;
 
 public class Torre extends Escenario implements Dibujable, Serializable {
 
 	private static final long serialVersionUID = 1L;
+	public static int torreId=0;
 	protected int numPlanta, oferta;
 	protected boolean fortificada;
 
 	public Torre() {
+		torreId++;
 		tamanio = 3f + numPlanta * 3.14f;
 		poder = (int) (Math.random() * 1000);
 		botin = (int) (Math.random() * 1000);
@@ -21,6 +23,7 @@ public class Torre extends Escenario implements Dibujable, Serializable {
 
 	public Torre(int nuPlanta, int poder, int botin, int oferta, boolean fortificada) {
 		super();
+		torreId++;
 		this.numPlanta = nuPlanta;
 		this.poder = poder;
 		this.botin = botin;
@@ -35,6 +38,7 @@ public class Torre extends Escenario implements Dibujable, Serializable {
 	 */
 	public Torre(int nuPlanta, int oferta, boolean fortificada) {
 		super();
+		torreId++;
 		this.numPlanta = nuPlanta;
 		this.oferta = oferta;
 		this.fortificada = fortificada;
@@ -42,12 +46,18 @@ public class Torre extends Escenario implements Dibujable, Serializable {
 
 	public Torre(int numPlanta, int poder, int botin, int oferta, String string, String string2, boolean fortificado,
 			boolean b, Hostilidad hostilidad) {
+		torreId++;
 		this.numPlanta = numPlanta;
 		this.poder = poder;
 		this.botin = botin;
 		this.oferta = oferta;
 		this.bloqueo = fortificado;
 	}
+
+	public static int getTorreId() {
+		return torreId;
+	}
+
 
 	public int getOferta() {
 		return oferta;
@@ -97,7 +107,7 @@ public class Torre extends Escenario implements Dibujable, Serializable {
 		return tamanio;
 	}
 
-	public String getnombre() {
+	public String getNombre() {
 		return nombre;
 	}
 
@@ -201,16 +211,13 @@ public class Torre extends Escenario implements Dibujable, Serializable {
 		return resultadoBatalla;
 	}
 
-	public void comerciar(int mercancia, String nombre) {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
+	public int comerciar(int mercancia, String nombre) throws NumberFormatException, IOException {
 		int opc3, dinero = 0;
 		if (hostilidad != Hostilidad.HOSTIL) {
 			System.out.println("tienes " + mercancia + " " + nombre);
 			System.out.println("Ofrecen " + oferta + " por cada unidad");
 			do {
-				System.out.println("Cuantos quieres comerciar? (Pulsa 0 para dejar de comerciar).");
-				opc3 = scanner.nextInt();
+				opc3 = FuncionesGenerales.brInt("Cuantos quieres comerciar? (Pulsa 0 para dejar de comerciar).");
 				if (opc3 != 0) {
 					if (opc3 > mercancia) {
 						System.out.println("No tienes " + opc3 + " " + nombre + ", por favor sea serio.");
@@ -228,25 +235,25 @@ public class Torre extends Escenario implements Dibujable, Serializable {
 		} else {
 			System.out.println("No puedes comerciar con torres hostiles");
 		}
+		return dinero;
 
 	}
 
-	public void investigar() {
-		@SuppressWarnings("resource")
-		Scanner teclado = new Scanner(System.in);
+	public void investigar() throws NumberFormatException, IOException {
+
 		if (explorado == true) {
 			System.out.println(toString());
 		} else {
-			System.out.println("Parece que es una torre desconocida.");
+			System.out.println("Parece que es desconocida.");
 			System.out.println("Quieres investigarla? (0 = no, 1 = si");
-			int opcInves = teclado.nextInt();
+			int opcInves = FuncionesGenerales.brInt();
 			if (opcInves == 1) {
 				explorado = true;
-				System.out.println("Parece que es una torre " + getHostilidad());
+				System.out.println("Parece que es " + getHostilidad());
 				System.out.println(toString());
 				dibujar();
 			} else {
-				System.out.println("La torre sigue siendo desconocida");
+				System.out.println("Sigue siendo desconocida");
 			}
 		}
 	}
