@@ -120,7 +120,7 @@ public class Usuario implements Serializable {
         Thread.sleep(1000);
 
         EscritorAPS es = new EscritorAPS(new File("usuarios"));
-        es.escribirAPS(this,true);
+        es.escribirAPS(this,false);
 
         System.out.println();
         System.out.println("--------------------------");
@@ -153,7 +153,7 @@ public class Usuario implements Serializable {
 
             Usuario usr = new Usuario(nombre, contrasena, false);
             EscritorAPS es = new EscritorAPS(usuarios);
-            es.escribirAPS(usr,true);
+            es.escribirAPS(usr,false);
 
             retorno = 1;
         }

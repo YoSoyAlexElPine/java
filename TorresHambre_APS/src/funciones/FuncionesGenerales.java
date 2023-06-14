@@ -276,8 +276,11 @@ public class FuncionesGenerales {
                             usuarios.remove(i);
                         }
                     }
+                    System.out.println(user.getNombre());
+                    System.out.println(usuarios.size());
                     usuarios.remove(buscarLista(usuarios, user.getNombre()));
                     escribirUsuario.escribirAPS(usuarios);
+                     System.out.println(usuarios.size());
                     for (Torre t : torres) {
                         if (t.getUsuario().equalsIgnoreCase(user.getNombre())) {
                             torres.remove(t);
@@ -285,6 +288,8 @@ public class FuncionesGenerales {
                     }
                     escribirTorre.escribirAPS(torres,true);
                     System.out.println("Usuario eliminado :(");
+                    
+                    opcMenu=0;
                 }
                 case 0 ->
                     System.out.println();
