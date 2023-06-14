@@ -3,6 +3,7 @@ package funciones;
 import java.io.*;
 
 import java.util.LinkedList;
+import objetos.Torre;
 import objetos.Usuario;
 
 public class LectorAPS {
@@ -66,7 +67,31 @@ public class LectorAPS {
                 o = (Usuario) ois.readObject();
             }
         } catch (EOFException eofe) {
-            System.out.println("Hay un total de " + v + " Usuarios registrados");
+            System.out.println("Hay un total de " + v + " objetos registrados");
+        } catch (IOException ioe) {
+            System.out.println("Error en la lectura" + ioe.getMessage());
+        } catch (ClassNotFoundException cnfe) {
+            System.out.println("La clase no ha sido encontrada" + cnfe.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error en la lectura " + e.getMessage());
+        }
+        return v;
+    }
+    public int leer() throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = null;
+        Object o;
+        int v = 0;
+        try {
+            ois = new ObjectInputStream(new FileInputStream(fichero));
+            o = (Torre) ois.readObject();
+            while (o != null) {
+                v++;
+                System.out.println("Datos del usuario " + (v));
+                System.out.println(o.toString());
+                o = (Torre) ois.readObject();
+            }
+        } catch (EOFException eofe) {
+            System.out.println("Hay un total de " + v + " objetos registrados");
         } catch (IOException ioe) {
             System.out.println("Error en la lectura" + ioe.getMessage());
         } catch (ClassNotFoundException cnfe) {
@@ -84,8 +109,6 @@ public class LectorAPS {
      * fichero existe o no.
      *
      * @return
-     * @throws java.io.IOException
-     * @throws java.lang.ClassNotFoundException
      */
    public LinkedList<Usuario> leerListaAPS() {
         LinkedList<Usuario> listaUsuario = new LinkedList<>();
@@ -117,6 +140,36 @@ public class LectorAPS {
         }
         return listaUsuario;
     }
+    public LinkedList<Torre> leerLista() {
+        LinkedList<Torre> listaTorre = new LinkedList<>();
+        Torre u;
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(new FileInputStream(fichero));
+            //Se recorre el fichero hasta que se lean todos, cuando ya no haya salta la excepcion eofe y se muestra la cantidad de Torres que se leyeron
+            u = (Torre) ois.readObject();
+            while (u != null) {
+                listaTorre.add(u);
+                u = (Torre) ois.readObject();
+            }//Fin del while 
+        } catch (EOFException eofe) {
+        } catch (ClassNotFoundException cnfe) {
+            System.out.println("La clase no se ha encontrada: " + cnfe.getMessage());
+        } catch (IOException ioe) {
+            System.out.println("ERROR de E/S: " + ioe.getMessage());
+        } catch (Exception e) {
+            System.out.println("Se ha producido una excepción al recorrer el fichero: " + e.getMessage());
+        } finally {
+            try {
+                if (ois != null) {
+                    ois.close();
+                }
+            } catch (IOException ioe) {
+                System.out.println(ioe.getMessage());
+            }
+        }
+        return listaTorre;
+    }
 
 
 
@@ -129,7 +182,7 @@ public class LectorAPS {
      * encontró o se produce alguna excepción.Debe comprobar si el fichero
      * existe o no.
      *
-     * @param cont
+     * @param nombre
      * @return
      */
     public Usuario buscarAPS(String nombre) {        

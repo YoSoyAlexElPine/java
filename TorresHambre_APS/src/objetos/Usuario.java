@@ -81,7 +81,12 @@ public class Usuario implements Serializable {
     public Usuario() throws IOException, InterruptedException {
         File file = new File("usuarios");
         LectorAPS lec = new LectorAPS(file);
+        EscritorAPS es = new EscritorAPS(new File("usuarios"));
         String contrasenaAux;
+
+        if (!file.exists()) {
+            es.escribirAPS(new Usuario("admin", "admin123+", true), true);
+        }
 
         System.out.println("--------------------------");
         System.out.println("-  Registro De Usuario   - ");
@@ -96,16 +101,16 @@ public class Usuario implements Serializable {
             }
         } while (lec.buscar2APS(nombre) != null);
         do {
-               contrasenaAux=FuncionesGenerales.brString("Contrasena: ");
-               if (!contrasenaAux.matches(FuncionesGenerales.FUERTE)) {
-                   System.out.println("");
-                   System.out.println("La contrasena introducida no es fuerte");
-                   System.out.println("Asegurate de que tenga minimo 5 letras, 1 numero y 1 caracter especial");
-                   System.out.println("Ejemplo: MeGustaJava123+");
-                   System.out.println("");
+            contrasenaAux = FuncionesGenerales.brString("Contrasena: ");
+            if (!contrasenaAux.matches(FuncionesGenerales.FUERTE)) {
+                System.out.println("");
+                System.out.println("La contrasena introducida no es fuerte");
+                System.out.println("Asegurate de que tenga minimo 5 letras, 1 numero y 1 caracter especial");
+                System.out.println("Ejemplo: MeGustaJava123+");
+                System.out.println("");
             }
         } while (!contrasenaAux.matches(FuncionesGenerales.FUERTE));
-     this.contrasena = contrasenaAux;
+        this.contrasena = contrasenaAux;
         this.numero = FuncionesGenerales.brInt("Numero de telefono (opcional) : ");
         do {
             this.email = FuncionesGenerales.brString("Email: ");
@@ -119,8 +124,7 @@ public class Usuario implements Serializable {
 
         Thread.sleep(1000);
 
-        EscritorAPS es = new EscritorAPS(new File("usuarios"));
-        es.escribirAPS(this,false);
+        es.escribirAPS(this, false);
 
         System.out.println();
         System.out.println("--------------------------");
@@ -153,7 +157,7 @@ public class Usuario implements Serializable {
 
             Usuario usr = new Usuario(nombre, contrasena, false);
             EscritorAPS es = new EscritorAPS(usuarios);
-            es.escribirAPS(usr,false);
+            es.escribirAPS(usr, false);
 
             retorno = 1;
         }
@@ -170,13 +174,18 @@ public class Usuario implements Serializable {
      */
     public static boolean login() throws IOException, InterruptedException, ClassNotFoundException {
 
-        boolean retorno=false;
+        boolean retorno = false;
         String contrasena, nombre;
         int intentos = 3;
+        File file = new File("usuarios");
+        LectorAPS lec = new LectorAPS(file);
+        EscritorAPS es = new EscritorAPS(new File("usuarios"));
+        if (!file.exists()) {
+            es.escribirAPS(new Usuario("admin", "admin123+", true), true);
+        }
 
         nombre = FuncionesGenerales.brString("Nombre: ");
 
-        LectorAPS lec = new LectorAPS(new File("usuarios"));
         Usuario user = lec.buscarAPS(nombre);
 
         if (user == null) {
@@ -204,7 +213,6 @@ public class Usuario implements Serializable {
                 System.out.println("Tu usario se ha elimidado :(");
                 Thread.sleep(2000);
             }
-            
 
         }
 

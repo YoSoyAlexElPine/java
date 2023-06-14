@@ -10,8 +10,8 @@ import funciones.EscritorAPS;
 public class Torre extends Escenario implements Dibujable, Serializable {
 
     private static final long serialVersionUID = 1L;
-    public static int torreId = 0;
-    public static String usuario;
+    public int torreId = 0;
+    public String usuario;
     protected int numPlanta, oferta;
     protected boolean fortificada;
 
@@ -94,7 +94,6 @@ public class Torre extends Escenario implements Dibujable, Serializable {
 
     public static Torre generarTorre(Usuario user) {
         int numPlanta, botin, poder, oferta;
-        usuario = user.getNombre();
         boolean fortificado;
         Hostilidad hostilidad = null;
         numPlanta = (int) (Math.random() * 10);
@@ -121,7 +120,7 @@ public class Torre extends Escenario implements Dibujable, Serializable {
         }// fin del switch
         Torre torre = new Torre(user, numPlanta, poder, botin, oferta, "Elfica", "Norte", fortificado, false, hostilidad);
         EscritorAPS es = new EscritorAPS(new File("torres"));
-        es.escribirAPS(torre,true);
+        es.escribirAPS(torre,false);
         return torre;
     }// fin de la generacion de torre
 
@@ -137,7 +136,7 @@ public class Torre extends Escenario implements Dibujable, Serializable {
      */
     public static Torre crearTorre(Usuario user) throws NumberFormatException, IOException, InterruptedException {
         int numPlantas, botin, aux, aux2;
-        usuario = user.getNombre();
+
         Hostilidad aux3 = null;
         boolean fort;
 
@@ -171,7 +170,7 @@ public class Torre extends Escenario implements Dibujable, Serializable {
         }
         Torre torre = new Torre(user, numPlantas, 100, botin, 200, "Humana", "Oeste", fort, false, aux3);
         EscritorAPS es = new EscritorAPS(new File("torres"));
-        es.escribirAPS(torre,true);
+        es.escribirAPS(torre,false);
         return torre;
     }// fin clase
 
@@ -236,7 +235,7 @@ public class Torre extends Escenario implements Dibujable, Serializable {
      */
     @Override
     public String toString() {
-        return "Usuario =" + usuario +"Numero de plantas=" + numPlanta + ", poder=" + poder + ", botin=" + botin + ", oferta=" + oferta
+        return "Usuario =" + usuario +" , Numero de plantas=" + numPlanta + ", poder=" + poder + ", botin=" + botin + ", oferta=" + oferta
                 + ", fortificada=" + fortificada + ", hostilidad=" + hostilidad + "]";
     }
 
@@ -353,9 +352,7 @@ public class Torre extends Escenario implements Dibujable, Serializable {
      *
      * @return
      */
-    public static int getTorreId() {
-        return torreId;
-    }
+
 
     public int getOferta() {
         return oferta;
@@ -403,7 +400,8 @@ public class Torre extends Escenario implements Dibujable, Serializable {
 
     }
 
-    public static String getUsuario() {
+    public String getUsuario() {
         return usuario;
     }
+
 }
