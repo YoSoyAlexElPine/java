@@ -6,9 +6,7 @@ public class main {
 
     public static void main(String[] args) {
     	
-		new Calculadora();
-		
-		
+		new MyFrame_8();		
 		
 		
 	}
