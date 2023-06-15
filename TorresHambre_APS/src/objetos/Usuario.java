@@ -6,6 +6,7 @@ import java.io.Serializable;
 import funciones.EscritorAPS;
 import funciones.FuncionesGenerales;
 import static funciones.FuncionesGenerales.buscarLista;
+import static funciones.FuncionesGenerales.user;
 import funciones.LectorAPS;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
@@ -205,12 +206,16 @@ public class Usuario implements Serializable {
                 LectorAPS leerTorre = new LectorAPS(torreFichero);
                 EscritorAPS escribirTorre = new EscritorAPS(torreFichero);
 
+                usuarios = leerUsuario.leerListaAPS();
+                torres = leerTorre.leerLista();
+
                 try {
                     for (int i = 0; i < usuarios.size(); i++) {
                         // Comprueba si el nombre del usuario en la posición actual es igual al nombre del usuario actualmente logueado
                         if (usuarios.get(i).getNombre().equals(user.getNombre())) {
                             // Si hay una coincidencia, elimina el usuario de la lista
                             usuarios.remove(i);
+                            i--; // Decrementa el índice para compensar la eliminación
                         }
                     }
 
@@ -220,12 +225,14 @@ public class Usuario implements Serializable {
                     // Escribe la lista de usuarios actualizada en el archivo
                     escribirUsuario.escribirAPS(usuarios);
 
-                    // Recorre la lista de torres
-                    for (Torre t : torres) {
+                    // Crea una copia de la lista de torres para evitar ConcurrentModificationException
+                    LinkedList<Torre> torresCopy = new LinkedList<>(torres);
+                    for (Torre t : torresCopy) {
                         // Comprueba si el nombre de usuario asociado a la torre es igual al nombre del usuario actualmente logueado (ignorando mayúsculas y minúsculas)
                         if (t.getUsuario().equalsIgnoreCase(user.getNombre())) {
                             // Si hay una coincidencia, elimina la torre de la lista
                             torres.remove(t);
+                            System.out.println(t.getUsuario() + " = " + t.getNombre());
                         }
                     }
 
