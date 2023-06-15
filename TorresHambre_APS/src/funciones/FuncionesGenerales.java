@@ -347,7 +347,6 @@ public class FuncionesGenerales {
                 }
                 case 10 -> {
                     nombreBusqueda = brString("Introduce el nombre de la torre a buscar: ");
-                    System.out.println(torres.size());
                     torreBusqueda = buscaLista(torres, nombreBusqueda);  // Buscar el Usuario en la lista de usuarios
                     if (torreBusqueda == null) {
                         System.out.println("");
@@ -440,7 +439,6 @@ public class FuncionesGenerales {
         Torre retorno = null;
         for (Torre userAux : usuarios) {
             // Compara el nombre del usuario en la lista con el nombre proporcionado
-            System.out.println(userAux.getNombre());
             if (usuario.equals(userAux.getNombre())) {
                 retorno = userAux; // Asigna el usuario encontrado a la variable retorno
             }
