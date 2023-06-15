@@ -235,8 +235,17 @@ public class Torre extends Escenario implements Dibujable, Serializable {
      */
     @Override
     public String toString() {
-        return "Usuario =" + usuario +" , Numero de plantas=" + numPlanta + ", poder=" + poder + ", botin=" + botin + ", oferta=" + oferta
-                + ", fortificada=" + fortificada + ", hostilidad=" + hostilidad + "]";
+        
+        System.out.println("Usuario = " + usuario);
+        System.out.println("Numero de plantas = " + numPlanta);
+        System.out.println("poder = " + poder );
+        System.out.println("botin = " + botin );
+        System.out.println("oferta = " + oferta);
+        System.out.println("fortificada = " + fortificada);
+        System.out.println("hostilidad = " + hostilidad);
+        System.out.println("=====================");
+        System.out.println("");
+        return " ";
     }
 
     /**

@@ -86,8 +86,11 @@ public class LectorAPS {
             o = (Torre) ois.readObject();
             while (o != null) {
                 v++;
-                System.out.println("Datos del usuario " + (v));
+                System.out.println("");
+                System.out.println("===Datos de la torre " + (v)+" ===");
                 System.out.println(o.toString());
+                System.out.println("");
+                
                 o = (Torre) ois.readObject();
             }
         } catch (EOFException eofe) {

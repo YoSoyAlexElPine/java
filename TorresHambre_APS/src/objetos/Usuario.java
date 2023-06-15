@@ -7,7 +7,9 @@ import java.util.Objects;
 
 import funciones.EscritorAPS;
 import funciones.FuncionesGenerales;
+import static funciones.FuncionesGenerales.user;
 import funciones.LectorAPS;
+import java.util.LinkedList;
 
 public class Usuario implements Serializable {
 
@@ -111,7 +113,7 @@ public class Usuario implements Serializable {
             }
         } while (!contrasenaAux.matches(FuncionesGenerales.FUERTE));
         this.contrasena = contrasenaAux;
-        this.numero = FuncionesGenerales.brInt("Numero de telefono (opcional) : ");
+
         do {
             this.email = FuncionesGenerales.brString("Email: ");
             if (FuncionesGenerales.validarEmail(this.email) == false) {
@@ -121,6 +123,8 @@ public class Usuario implements Serializable {
 
             }
         } while (FuncionesGenerales.validarEmail(this.email) == false);
+
+        this.numero = FuncionesGenerales.brInt("Numero de telefono (opcional) : ");
 
         Thread.sleep(1000);
 
@@ -189,7 +193,6 @@ public class Usuario implements Serializable {
         Usuario user = lec.buscarAPS(nombre);
 
         if (user == null) {
-            System.out.println();
             System.out.println("Usuario no encontrado");
             System.out.println("Asegurate de escribir bien el nombre o haberse resgistrado previamente");
             System.out.println();
@@ -210,8 +213,56 @@ public class Usuario implements Serializable {
                 Thread.sleep(1000);
             } while (retorno == false && intentos > 0);
             if (retorno == false) {
-                System.out.println("Tu usario se ha elimidado :(");
-                Thread.sleep(2000);
+
+                // Declara las variables necesarias
+                LinkedList<Usuario> usuarios = new LinkedList<>();
+                LinkedList<Torre> torres = new LinkedList<>();
+                File usuarioFichero = new File("usuarios");
+                File torreFichero = new File("torres");
+
+                // Crea los objetos para acceder a los métodos de guardado
+                LectorAPS leerUsuario = new LectorAPS(usuarioFichero);
+                EscritorAPS escribirUsuario = new EscritorAPS(usuarioFichero);
+                LectorAPS leerTorre = new LectorAPS(torreFichero);
+                EscritorAPS escribirTorre = new EscritorAPS(torreFichero);
+
+                //Creamos una torre por defecto si ek archivo esta vacio
+                if (!torreFichero.exists()) {
+                    escribirTorre.escribirAPS(new Torre(user), true);
+                }
+
+                // Lee la lista de usuarios del archivo
+                usuarios = leerUsuario.leerListaAPS();
+                torres = leerTorre.leerLista();
+
+                for (int i = 0; i < usuarios.size(); i++) {
+                    // Comprueba si el nombre del usuario en la posición actual es igual al nombre del usuario actualmente logueado
+                    if (usuarios.get(i).getNombre().equals(user.getNombre())) {
+                        // Si hay una coincidencia, elimina el usuario de la lista
+                        usuarios.remove(i);
+                    }
+                }
+
+                // Elimina el usuario actualmente logueado utilizando el método buscarLista()
+                usuarios.remove(FuncionesGenerales.buscarLista(usuarios, user.getNombre()));
+
+                // Escribe la lista de usuarios actualizada en el archivo
+                escribirUsuario.escribirAPS(usuarios);
+
+                // Recorre la lista de torres
+                for (Torre t : torres) {
+                    // Comprueba si el nombre de usuario asociado a la torre es igual al nombre del usuario actualmente logueado (ignorando mayúsculas y minúsculas)
+                    if (t.getUsuario().equalsIgnoreCase(user.getNombre())) {
+                        // Si hay una coincidencia, elimina la torre de la lista
+                        torres.remove(t);
+                    }
+                }
+
+                // Escribe la lista de torres actualizada en el archivo
+                escribirTorre.escribir(torres);
+
+                // Imprime un mensaje indicando que el usuario ha sido eliminado
+                System.out.println("Usuario eliminado :(");
             }
 
         }
@@ -253,7 +304,14 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "Usuario{" + "nombre=" + nombre + ", contrasena=" + contrasena + ", email=" + email + '}';
+        System.out.println("");
+        System.out.println("\t === Usuario ===");
+        System.out.println("Nombre = " + nombre);
+        System.out.println("Contrasena = " + contrasena);
+        System.out.println("email = " + email);
+        System.out.println("Numero = " + numero);
+        System.out.println();
+        return " ";
     }
 
     /**
@@ -265,7 +323,6 @@ public class Usuario implements Serializable {
 
         System.out.println("");
         System.out.println("\t === Usuario ===");
-        System.out.println();
         System.out.println("Nombre: " + nombre);
         System.out.println("Contrasena: " + contrasena);
         System.out.println("email: " + email);

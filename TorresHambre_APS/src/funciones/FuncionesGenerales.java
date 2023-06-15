@@ -126,39 +126,11 @@ public class FuncionesGenerales {
     public static void menuTorre() throws NumberFormatException, IOException, InterruptedException {
 
         // Variables
-        int opc, opc2, fuerza = 999999999;
-        Torre torre1 = null;
-        if (user.isAdmin() == true) {
-            System.out.println("""
-					------------------------------
-					-           Torre            -
-					------------------------------
-					- 1. Generar torre aleatoria -
-					- 2. Crear torre             -
-					------------------------------
-					- 0. Salir                   -
-					------------------------------
-					""");
-
-            opc2 = brInt("Introduzca una opcion valida: ");
-
-            switch (opc2) {
-                case 1 ->
-                    Torre.generarTorre(user);
-                case 2 ->
-                    Torre.crearTorre(user);
-                case 0 -> {
-                }
-
-                default -> {
-                    System.out.println("Opcion no valida.");
-                    System.out.println();
-                    Thread.sleep(2000);
-                }
-            }
-        } else {
-            torre1 = Torre.generarTorre(user);
-        }
+        int opc, fuerza = 999999999;
+        Torre torre1;
+        
+        torre1 = Torre.generarTorre(user);
+        
 
         do {
 
@@ -304,7 +276,7 @@ public class FuncionesGenerales {
                     }
 
                     // Escribe la lista de torres actualizada en el archivo
-                    escribirTorre.escribirAPS(torres, true);
+                    escribirTorre.escribir(torres);
 
                     // Imprime un mensaje indicando que el usuario ha sido eliminado
                     System.out.println("Usuario eliminado :(");
@@ -333,7 +305,7 @@ public class FuncionesGenerales {
      * @param usuario el nombre del usuario a buscar.
      * @return el usuario encontrado o null si no se encuentra.
      */
-    private static Usuario buscarLista(LinkedList<Usuario> usuarios, String usuario) {
+    public static Usuario buscarLista(LinkedList<Usuario> usuarios, String usuario) {
         Usuario retorno = null;
         for (Usuario userAux : usuarios) {
             // Compara el nombre del usuario en la lista con el nombre proporcionado
