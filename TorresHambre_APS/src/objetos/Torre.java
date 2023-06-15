@@ -360,11 +360,4 @@ public class Torre extends Escenario implements Dibujable, Serializable {
     public String getUsuario() {
         return usuario;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 37 * hash + Objects.hashCode(this.usuario);
-        return hash;
-    }
 }
