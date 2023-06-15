@@ -7,18 +7,18 @@ import java.util.Objects;
 
 import funciones.EscritorAPS;
 import funciones.FuncionesGenerales;
-import static funciones.FuncionesGenerales.user;
+import static funciones.FuncionesGenerales.buscarLista;
 import funciones.LectorAPS;
+import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    protected String nombre, contrasena, colorFav = "no tiene", comidaFav = "no tiene", email = "no tiene";
+    protected String nombre, contrasena, email = "no tiene";
     protected int numero = 0;
-    protected double saldo = 0;
     protected File usuarios = new File("usuarios");
-    protected boolean admin = false;
+    protected boolean admin = false, alta;
 
     static boolean login = false;
 
@@ -42,36 +42,14 @@ public class Usuario implements Serializable {
      *
      * @param nombre
      * @param contrasena
+     * @param admin
      */
     public Usuario(String nombre, String contrasena, boolean admin) {
         super();
         this.nombre = nombre;
         this.contrasena = contrasena;
         this.admin = admin;
-
-    }
-
-    /**
-     * Constructor para usuario completo
-     *
-     * @param nombre
-     * @param contrasena
-     * @param colorFav
-     * @param comidaFav
-     * @param email
-     * @param numero
-     * @param saldo
-     */
-    public Usuario(String nombre, String contrasena, String colorFav, String comidaFav, String email, int numero,
-            double saldo) {
-        super();
-        this.nombre = nombre;
-        this.contrasena = contrasena;
-        this.colorFav = colorFav;
-        this.comidaFav = comidaFav;
-        this.email = email;
-        this.numero = numero;
-        this.saldo = saldo;
+        this.alta = true;
     }
 
     /**
@@ -95,7 +73,6 @@ public class Usuario implements Serializable {
         System.out.println("--------------------------");
         System.out.println();
         do {
-
             nombre = FuncionesGenerales.brString("Nombre: ");
             if (lec.buscar2APS(nombre) != null) {
                 System.out.println("Este nombre ya esta cogido.");
@@ -119,6 +96,7 @@ public class Usuario implements Serializable {
             if (FuncionesGenerales.validarEmail(this.email) == false) {
                 System.out.println();
                 System.out.println("Porfavor, introduce un email valido");
+                System.out.println("");
                 Thread.sleep(1000);
 
             }
@@ -184,15 +162,22 @@ public class Usuario implements Serializable {
         File file = new File("usuarios");
         LectorAPS lec = new LectorAPS(file);
         EscritorAPS es = new EscritorAPS(new File("usuarios"));
+
+        Usuario admin = new Usuario("admin", "admin123+", true);
         if (!file.exists()) {
-            es.escribirAPS(new Usuario("admin", "admin123+", true), true);
+
+            es.escribirAPS(admin, true);
+
         }
+        FuncionesGenerales.userAdmin=admin;
 
         nombre = FuncionesGenerales.brString("Nombre: ");
-
+     
+        
         Usuario user = lec.buscarAPS(nombre);
 
         if (user == null) {
+               System.out.println("");
             System.out.println("Usuario no encontrado");
             System.out.println("Asegurate de escribir bien el nombre o haberse resgistrado previamente");
             System.out.println();
@@ -207,12 +192,14 @@ public class Usuario implements Serializable {
                     retorno = true;
                 } else {
                     intentos--;
+                    System.out.println("");
                     System.out.println("Contrasena incorrecta.");
+                    System.out.println("");
                     retorno = false;
                 }
                 Thread.sleep(1000);
             } while (retorno == false && intentos > 0);
-            if (retorno == false) {
+            if (retorno == false && !"admin".equals(user.getNombre())) {
 
                 // Declara las variables necesarias
                 LinkedList<Usuario> usuarios = new LinkedList<>();
@@ -226,43 +213,49 @@ public class Usuario implements Serializable {
                 LectorAPS leerTorre = new LectorAPS(torreFichero);
                 EscritorAPS escribirTorre = new EscritorAPS(torreFichero);
 
-                //Creamos una torre por defecto si ek archivo esta vacio
-                if (!torreFichero.exists()) {
-                    escribirTorre.escribirAPS(new Torre(user), true);
-                }
-
-                // Lee la lista de usuarios del archivo
-                usuarios = leerUsuario.leerListaAPS();
-                torres = leerTorre.leerLista();
-
-                for (int i = 0; i < usuarios.size(); i++) {
-                    // Comprueba si el nombre del usuario en la posición actual es igual al nombre del usuario actualmente logueado
-                    if (usuarios.get(i).getNombre().equals(user.getNombre())) {
-                        // Si hay una coincidencia, elimina el usuario de la lista
-                        usuarios.remove(i);
+                try {
+                    for (int i = 0; i < usuarios.size(); i++) {
+                        // Comprueba si el nombre del usuario en la posición actual es igual al nombre del usuario actualmente logueado
+                        if (usuarios.get(i).getNombre().equals(user.getNombre())) {
+                            // Si hay una coincidencia, elimina el usuario de la lista
+                            usuarios.remove(i);
+                        }
                     }
-                }
 
-                // Elimina el usuario actualmente logueado utilizando el método buscarLista()
-                usuarios.remove(FuncionesGenerales.buscarLista(usuarios, user.getNombre()));
+                    // Elimina el usuario actualmente logueado utilizando el método buscarLista()
+                    usuarios.remove(buscarLista(usuarios, user.getNombre()));
 
-                // Escribe la lista de usuarios actualizada en el archivo
-                escribirUsuario.escribirAPS(usuarios);
+                    // Escribe la lista de usuarios actualizada en el archivo
+                    escribirUsuario.escribirAPS(usuarios);
 
-                // Recorre la lista de torres
-                for (Torre t : torres) {
-                    // Comprueba si el nombre de usuario asociado a la torre es igual al nombre del usuario actualmente logueado (ignorando mayúsculas y minúsculas)
-                    if (t.getUsuario().equalsIgnoreCase(user.getNombre())) {
-                        // Si hay una coincidencia, elimina la torre de la lista
-                        torres.remove(t);
+                    // Recorre la lista de torres
+                    for (Torre t : torres) {
+                        // Comprueba si el nombre de usuario asociado a la torre es igual al nombre del usuario actualmente logueado (ignorando mayúsculas y minúsculas)
+                        if (t.getUsuario().equalsIgnoreCase(user.getNombre())) {
+                            // Si hay una coincidencia, elimina la torre de la lista
+                            torres.remove(t);
+                        }
                     }
+
+                    // Escribe la lista de torres actualizada en el archivo
+                    escribirTorre.escribir(torres);
+
+                    // Imprime un mensaje indicando que el usuario ha sido eliminado
+                    System.out.println("");
+                    System.out.println("Usuario eliminado :(");
+                    System.out.println("");
+
+                } catch (ConcurrentModificationException e) {
+                    System.out.println("Parece que los archivos se han daniado");
+                    System.out.println("Elmina los archivos usuarios y torres");
+
+                } catch (Exception e) {
+                    System.out.println("Se produjo un error al eliminar el usuario: " + e.getMessage());
                 }
-
-                // Escribe la lista de torres actualizada en el archivo
-                escribirTorre.escribir(torres);
-
-                // Imprime un mensaje indicando que el usuario ha sido eliminado
-                System.out.println("Usuario eliminado :(");
+            }
+            if (retorno == false && "admin".equals(user.getNombre())) {
+                System.out.println("");
+                System.out.println("Acceso a administrador denegado");
             }
 
         }
@@ -310,6 +303,7 @@ public class Usuario implements Serializable {
         System.out.println("Contrasena = " + contrasena);
         System.out.println("email = " + email);
         System.out.println("Numero = " + numero);
+        System.out.println("Alta = " + alta);
         System.out.println();
         return " ";
     }
@@ -327,6 +321,7 @@ public class Usuario implements Serializable {
         System.out.println("Contrasena: " + contrasena);
         System.out.println("email: " + email);
         System.out.println("Numero: " + numero);
+        System.out.println("Alta: "+alta);
         System.out.println();
     }
 
@@ -351,30 +346,6 @@ public class Usuario implements Serializable {
      *
      * @return
      */
-    public double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(int saldo) {
-        this.saldo = saldo;
-    }
-
-    public String getColorFav() {
-        return colorFav;
-    }
-
-    public void setColorFav(String colorFav) {
-        this.colorFav = colorFav;
-    }
-
-    public String getComidaFav() {
-        return comidaFav;
-    }
-
-    public void setComidaFav(String comidaFav) {
-        this.comidaFav = comidaFav;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -424,8 +395,12 @@ public class Usuario implements Serializable {
         this.admin = admin;
     }
 
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
+    public void setAlta(boolean alta) {
+        this.alta = alta;
+    }
+
+    public boolean isAlta() {
+        return alta;
     }
 
 }

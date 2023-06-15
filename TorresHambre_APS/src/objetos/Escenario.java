@@ -13,7 +13,6 @@ public abstract class Escenario implements Serializable {
 	protected static int cont = 0;
 	protected int botin, poder, beneficios;
 	protected float tamanio;
-	protected String nombre;
 	protected boolean explorado, bloqueo;
 	protected Hostilidad hostilidad = Hostilidad.PASIVA;
 
@@ -23,14 +22,13 @@ public abstract class Escenario implements Serializable {
 
 	public Escenario(float tamanio, String nombre, boolean explorado, Hostilidad hostilidad) {
 		this.tamanio = tamanio;
-		this.nombre = nombre;
 		this.explorado = explorado;
 		this.hostilidad = hostilidad;
 		cont++;
 	}
 
 	public Escenario(String nombre, boolean explorado, Hostilidad hostilidad) {
-		this.nombre = nombre;
+
 		this.explorado = explorado;
 		this.hostilidad = hostilidad;
 		cont++;
@@ -65,13 +63,9 @@ public abstract class Escenario implements Serializable {
 		this.tamanio = tamanio;
 	}
 
-	public String getNombre() {
-		return nombre;
-	}
+	
 
-	public void setnombre(String nombre) {
-		this.nombre = nombre;
-	}
+
 
 	public boolean isExplorado() {
 		return explorado;
@@ -99,7 +93,7 @@ public abstract class Escenario implements Serializable {
 
 	@Override
 	public String toString() {
-			return "tamanio:" + tamanio + "\nombre:" + nombre + "\nbloqueo:" + explorado + "\nhostilidad:" + hostilidad;
+			return "tamanio:" + tamanio  + "\nbloqueo:" + explorado + "\nhostilidad:" + hostilidad;
 	}
 	
 
@@ -108,15 +102,18 @@ public abstract class Escenario implements Serializable {
 		if (explorado == true) {
 			System.out.println(toString());
 		} else {
-			System.out.println("Parece que es desconocida.");
-			System.out.println("Quieres investigarla? (0 = no, 1 = si) ");
+			System.out.println("Parece que es desconocida. Quieres investigarla? (0 = no, 1 = si) ");
 			int opcInves = FuncionesGenerales.brInt();
+                        System.out.println("");
 			if (opcInves == 1) {
 				explorado = true;
 				System.out.println("Parece que es " + getHostilidad());
+                                System.out.println("");
 				System.out.println(toString());
 			} else {
+                            System.out.println("");
 				System.out.println("Sigue siendo desconocida");
+                                System.out.println("");
 			}
 		}
 	}

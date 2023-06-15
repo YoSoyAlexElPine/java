@@ -1,17 +1,18 @@
 package objetos;
 
 import java.io.*;
-
-import funciones.FuncionesGenerales;
-
 import static funciones.Colores.*;
 import funciones.EscritorAPS;
+import funciones.FuncionesGenerales;
+import funciones.LectorAPS;
+import java.util.LinkedList;
+import java.util.Objects;
 
 public class Torre extends Escenario implements Dibujable, Serializable {
 
     private static final long serialVersionUID = 1L;
     public int torreId = 0;
-    public String usuario;
+    public String usuario,nombre;
     protected int numPlanta, oferta;
     protected boolean fortificada;
 
@@ -19,52 +20,16 @@ public class Torre extends Escenario implements Dibujable, Serializable {
      * Contructor vacio de Torre que rellena automatiucamente sus campos
      *
      * @param user
+     * @param nombre
      */
-    public Torre(Usuario user) {
+    public Torre(Usuario user, String nombre) {
+        this.nombre = nombre;
         usuario = user.getNombre();
         torreId++;
         tamanio = 3f + numPlanta * 3.14f;
         poder = (int) (Math.random() * 1000);
         botin = (int) (Math.random() * 1000);
         numPlanta = (int) (Math.random() * 1000);
-    }
-
-    /**
-     * Contructor de torre Basico
-     *
-     * @param user
-     * @param nuPlanta
-     * @param poder
-     * @param botin
-     * @param oferta
-     * @param fortificada
-     */
-    public Torre(Usuario user, int nuPlanta, int poder, int botin, int oferta, boolean fortificada) {
-        super();
-        usuario = user.getNombre();
-        torreId++;
-        this.numPlanta = nuPlanta;
-        this.poder = poder;
-        this.botin = botin;
-        this.oferta = oferta;
-        this.fortificada = fortificada;
-    }
-
-    /**
-     * Contructor de torre mas simple
-     *
-     * @param user
-     * @param nuPlanta
-     * @param oferta
-     * @param fortificada
-     */
-    public Torre(Usuario user, int nuPlanta, int oferta, boolean fortificada) {
-        super();
-        usuario = user.getNombre();
-        torreId++;
-        this.numPlanta = nuPlanta;
-        this.oferta = oferta;
-        this.fortificada = fortificada;
     }
 
     /**
@@ -80,9 +45,10 @@ public class Torre extends Escenario implements Dibujable, Serializable {
      * @param fortificado
      * @param b
      * @param hostilidad
+     * @param nombre
      */
     public Torre(Usuario user, int numPlanta, int poder, int botin, int oferta, String string, String string2, boolean fortificado,
-            boolean b, Hostilidad hostilidad) {
+            boolean b, Hostilidad hostilidad, String nombre) {
         torreId++;
         usuario = user.getNombre();
         this.numPlanta = numPlanta;
@@ -90,12 +56,35 @@ public class Torre extends Escenario implements Dibujable, Serializable {
         this.botin = botin;
         this.oferta = oferta;
         this.bloqueo = fortificado;
+        this.nombre = nombre;
     }
 
-    public static Torre generarTorre(Usuario user) {
+    public static Torre generarTorre(Usuario user) throws IOException, InterruptedException {
+
+        File fichero = new File("torres");
+        LectorAPS lec = new LectorAPS(fichero);
+        EscritorAPS es = new EscritorAPS(fichero);
+        LinkedList<Torre> torres = new LinkedList<>();
+        LectorAPS leerTorre = new LectorAPS(fichero);
+        torres = leerTorre.leerLista();
+
         int numPlanta, botin, poder, oferta;
         boolean fortificado;
         Hostilidad hostilidad = null;
+        String nombre;
+
+        do {
+            System.out.println("");
+            System.out.println("=== Nombre de tu torre ===");
+            nombre = FuncionesGenerales.brString("Nombre: ");
+            System.out.println("");
+            if (FuncionesGenerales.buscaLista(torres, nombre) != null) {
+                System.out.println("");
+                System.out.println("Este nombre ya esta cogido");
+                System.out.println("Intenta otro nombre");
+            }
+        } while (FuncionesGenerales.buscaLista(torres, nombre) != null);
+
         numPlanta = (int) (Math.random() * 10);
         botin = (int) (Math.random() * 10000);
         oferta = (int) (Math.random() * 500);
@@ -118,61 +107,11 @@ public class Torre extends Escenario implements Dibujable, Serializable {
             case 3 ->
                 hostilidad = Hostilidad.HOSTIL;
         }// fin del switch
-        Torre torre = new Torre(user, numPlanta, poder, botin, oferta, "Elfica", "Norte", fortificado, false, hostilidad);
-        EscritorAPS es = new EscritorAPS(new File("torres"));
-        es.escribirAPS(torre,false);
+        Torre torre = new Torre(user, numPlanta, poder, botin, oferta, "Elfica", "Norte", fortificado, false, hostilidad, nombre);
+
+        es.escribirAPS(torre, false);
         return torre;
     }// fin de la generacion de torre
-
-    /**
-     *
-     * Creacion de torre personalizada
-     *
-     * @param user
-     * @return
-     * @throws InterruptedException
-     * @throws java.io.IOException
-     *
-     */
-    public static Torre crearTorre(Usuario user) throws NumberFormatException, IOException, InterruptedException {
-        int numPlantas, botin, aux, aux2;
-
-        Hostilidad aux3 = null;
-        boolean fort;
-
-        numPlantas = FuncionesGenerales.brInt("Introducce numero de plantas: ");
-
-        botin = FuncionesGenerales.brInt("Introdicce el botin que tendra tu torre: ");
-
-        System.out.println("Esta fortificada? (0 = no, 1 = si) : ");
-
-        aux = FuncionesGenerales.brInt();
-
-        System.out.println("Como es su temperamento? (0 = amistoso | 1 = neutral | 2 = hostil | 3 = tuyo) : ");
-
-        aux2 = FuncionesGenerales.brInt("Introducce numero de plantas: ");
-
-        switch (aux2) {
-            case 0 ->
-                aux3 = Hostilidad.AMISTOSA;
-            case 1 ->
-                aux3 = Hostilidad.PASIVA;
-            case 2 ->
-                aux3 = Hostilidad.HOSTIL;
-            case 3 ->
-                aux3 = Hostilidad.TUYA;
-        }
-
-        if (aux == 0) {
-            fort = false;
-        } else {
-            fort = true;
-        }
-        Torre torre = new Torre(user, numPlantas, 100, botin, 200, "Humana", "Oeste", fort, false, aux3);
-        EscritorAPS es = new EscritorAPS(new File("torres"));
-        es.escribirAPS(torre,false);
-        return torre;
-    }// fin clase
 
     /**
      * Generacion de evento aleatorio funcional pero no implementado finalmente
@@ -184,7 +123,7 @@ public class Torre extends Escenario implements Dibujable, Serializable {
         switch (numero) {
             case 1 -> {
                 int numeroPisos = (int) (Math.random() * 5);
-                System.out.println("Los dueños de la torre deciden mejorar su torre agregando " + numeroPisos + " más.");
+                System.out.println("Los duenios de la torre deciden mejorar su torre agregando " + numeroPisos + " mas.");
                 numPlanta = numPlanta + numeroPisos;
             }
             case 2 -> {
@@ -235,11 +174,12 @@ public class Torre extends Escenario implements Dibujable, Serializable {
      */
     @Override
     public String toString() {
-        
+
         System.out.println("Usuario = " + usuario);
+        System.out.println("Nombre = " + nombre);
         System.out.println("Numero de plantas = " + numPlanta);
-        System.out.println("poder = " + poder );
-        System.out.println("botin = " + botin );
+        System.out.println("poder = " + poder);
+        System.out.println("botin = " + botin);
         System.out.println("oferta = " + oferta);
         System.out.println("fortificada = " + fortificada);
         System.out.println("hostilidad = " + hostilidad);
@@ -271,6 +211,7 @@ public class Torre extends Escenario implements Dibujable, Serializable {
     public int saquear() {
         int memoria = botin;
         System.out.println("Has saqueado la torre, ahora el botin " + botin + " te pertenece");
+        System.out.println("");
         botin = 0;
         hostilidad = Hostilidad.HOSTIL;
         return memoria;
@@ -293,6 +234,7 @@ public class Torre extends Escenario implements Dibujable, Serializable {
             System.out.println("No has logrado conquistar la torre y lo has perdido todo.");
             resultadoBatalla = false;
         }
+        System.out.println("");
         return resultadoBatalla;
     }
 
@@ -361,8 +303,6 @@ public class Torre extends Escenario implements Dibujable, Serializable {
      *
      * @return
      */
-
-
     public int getOferta() {
         return oferta;
     }
@@ -403,6 +343,14 @@ public class Torre extends Escenario implements Dibujable, Serializable {
         this.botin = botin;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
     @Override
     public void menuOpciones() {
         // TODO Auto-generated method stub
@@ -411,6 +359,28 @@ public class Torre extends Escenario implements Dibujable, Serializable {
 
     public String getUsuario() {
         return usuario;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.usuario);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Torre other = (Torre) obj;
+        return Objects.equals(this.usuario, other.usuario);
     }
 
 }

@@ -62,7 +62,6 @@ public class LectorAPS {
             o = (Usuario) ois.readObject();
             while (o != null) {
                 v++;
-                System.out.println("Datos del usuario " + (v));
                 System.out.println(o.toString());
                 o = (Usuario) ois.readObject();
             }
@@ -77,6 +76,7 @@ public class LectorAPS {
         }
         return v;
     }
+
     public int leer() throws IOException, ClassNotFoundException {
         ObjectInputStream ois = null;
         Object o;
@@ -87,10 +87,10 @@ public class LectorAPS {
             while (o != null) {
                 v++;
                 System.out.println("");
-                System.out.println("===Datos de la torre " + (v)+" ===");
+                System.out.println("===Datos de la torre " + (v) + " ===");
                 System.out.println(o.toString());
                 System.out.println("");
-                
+
                 o = (Torre) ois.readObject();
             }
         } catch (EOFException eofe) {
@@ -113,7 +113,7 @@ public class LectorAPS {
      *
      * @return
      */
-   public LinkedList<Usuario> leerListaAPS() {
+    public LinkedList<Usuario> leerListaAPS() {
         LinkedList<Usuario> listaUsuario = new LinkedList<>();
         Usuario u;
         ObjectInputStream ois = null;
@@ -143,6 +143,7 @@ public class LectorAPS {
         }
         return listaUsuario;
     }
+
     public LinkedList<Torre> leerLista() {
         LinkedList<Torre> listaTorre = new LinkedList<>();
         Torre u;
@@ -174,8 +175,6 @@ public class LectorAPS {
         return listaTorre;
     }
 
-
-
     /**
      *
      * Funcion que busque y recupere el objeto cuyo valor coincida con el
@@ -188,42 +187,43 @@ public class LectorAPS {
      * @param nombre
      * @return
      */
-    public Usuario buscarAPS(String nombre) {        
+    public Usuario buscarAPS(String nombre) {
         Usuario usuario = null;
         boolean encontrado = false;
         ObjectInputStream ois = null;
         try {
-            ois = new ObjectInputStream(new FileInputStream(fichero)); 
+            ois = new ObjectInputStream(new FileInputStream(fichero));
             usuario = (Usuario) ois.readObject();
             while (usuario != null && !encontrado) {
                 if (usuario.getNombre().equals(nombre)) {
-                        encontrado = true;
+                    encontrado = true;
                 } else {
-                    usuario = (Usuario)ois.readObject();
-                }  
+                    usuario = (Usuario) ois.readObject();
+                }
             }//Fin del while 
-            if (!encontrado){
+            if (!encontrado) {
                 usuario = null;
             }
         } catch (EOFException eofe) {
             System.out.println("Se ha recorrido todo el fichero sin encontrar el usuario cuyo nombre es: " + nombre);
-            usuario = null;   
+            usuario = null;
         } catch (IOException ioe) {
             System.out.println("ERROR de E/S: " + ioe.getMessage());
             usuario = null;
         } catch (ClassNotFoundException ex) {
             System.out.println("ERROR al leer datos: " + ex.getMessage());
             usuario = null;
-             } catch (ClassCastException ex) {
+        } catch (ClassCastException ex) {
             System.out.println("ClassCastException");
             usuario = null;
-        }finally{
-            try{
+        } finally {
+            try {
                 if (ois != null) {
-                    ois.close();}
-            }catch(IOException ioe){
+                    ois.close();
+                }
+            } catch (IOException ioe) {
                 System.out.println("Error al cerrar el stream de lectura durante la búsqueda " + ioe.getMessage());
-            } 
+            }
         }//Fin del  try
         return usuario;
     }
@@ -269,4 +269,42 @@ public class LectorAPS {
         return u;
     }
 
+    public Torre buscar2(String nombre) {
+        Torre u = null;
+        boolean encontrado = false;
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(new FileInputStream(fichero));
+            while (true) {
+                u = (Torre) ois.readObject();
+                if (u.getNombre() != null) {
+                    if (u.getNombre().equals(nombre)) {
+                        encontrado = true;
+                        break;
+                    } else {
+                        encontrado=false;
+                    }
+                }
+
+            }
+        } catch (EOFException eofe) {
+            //System.out.println("Se ha recorrido todo el fichero sin encontrar al Torre con el nombre: " + nombre);
+        } catch (IOException ioe) {
+            System.out.println("ERROR de E/S: " + ioe.getMessage());
+        } catch (ClassNotFoundException cnfe) {
+            System.out.println("ERROR al leer el objeto Torre: " + cnfe.getMessage());
+        } finally {
+            try {
+                if (ois != null) {
+                    ois.close();
+                }
+            } catch (IOException ioe) {
+                System.out.println("Error al cerrar el stream de lectura: " + ioe.getMessage());
+            }
+        }
+        if (!encontrado) {
+            u = null;
+        }
+        return u;
+    }
 }
