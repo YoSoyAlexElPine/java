@@ -23,7 +23,6 @@ public class TorresDelHambreApp {
                 case 1 -> {
                     // Logeo de usuario
                     if (Usuario.login() == true) {
-                        Thread.sleep(1000);// pausa
                         FuncionesGenerales.jugar();
                     }
                 }

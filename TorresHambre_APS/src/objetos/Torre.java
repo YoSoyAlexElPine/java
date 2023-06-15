@@ -367,20 +367,4 @@ public class Torre extends Escenario implements Dibujable, Serializable {
         hash = 37 * hash + Objects.hashCode(this.usuario);
         return hash;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Torre other = (Torre) obj;
-        return Objects.equals(this.usuario, other.usuario);
-    }
-
 }

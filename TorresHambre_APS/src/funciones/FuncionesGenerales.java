@@ -131,6 +131,7 @@ public class FuncionesGenerales {
         int opc, fuerza = 999999999;
         Torre torre1;
 
+        //Generacion de torre
         torre1 = Torre.generarTorre(user);
 
         do {
@@ -176,6 +177,7 @@ public class FuncionesGenerales {
         // Declara las variables necesarias
         Usuario userBusqueda;
         Torre torreBusqueda;
+        boolean una = false;
 
         LinkedList<Usuario> usuarios = new LinkedList<>();
         LinkedList<Torre> torres = new LinkedList<>();
@@ -203,19 +205,29 @@ public class FuncionesGenerales {
         int opcMenu = 0;
 
         do {
+            if (una) {
+                System.out.println("");
+                System.out.println("Volviendo al menu...");
+                Thread.sleep(3000);
+
+            }
+            una = true;
             System.out.println();
             System.out.println("-----------------------------");
             System.out.println("-     Torres del hambre     -");
             System.out.println("-----------------------------");
             System.out.println("- 1. Jugar                  -");
+            System.out.println("-----------------------------");
             System.out.println("- 2. Ver datos usuario      -");
             System.out.println("- 3. Ver listado usuarios   -");
             System.out.println("- 4. Ver listado torres     -");
+            System.out.println("-----------------------------");
             System.out.println("- 5. Cambiar contrasena     -");
             System.out.println("- 6. Borrar usuario         -");
             System.out.println("- 7. Buscar usuario         -");
             System.out.println("- 8. Dar de alta            -");
             System.out.println("- 9. Dar de baja            -");
+            System.out.println("-----------------------------");
             System.out.println("- 10. Buscar torre          -");
             System.out.println("- 11. Eliminar torre        -");
             System.out.println("-----------------------------");
@@ -231,6 +243,7 @@ public class FuncionesGenerales {
                 case 1 -> {
                     if (user.isAlta()) {
                         FuncionesGenerales.menuTorre(); // Llama a la función para mostrar el menú de la torre
+                        torres = leerTorre.leerLista();
                     } else {
                         System.out.println("");
                         System.out.println("No puedes jugar si no das de alta a tu usuario");
@@ -278,6 +291,7 @@ public class FuncionesGenerales {
                                 if (usuarios.get(i).getNombre().equals(user.getNombre())) {
                                     // Si hay una coincidencia, elimina el usuario de la lista
                                     usuarios.remove(i);
+                                    i--; // Decrementa el índice para compensar la eliminación
                                 }
                             }
 
@@ -287,12 +301,14 @@ public class FuncionesGenerales {
                             // Escribe la lista de usuarios actualizada en el archivo
                             escribirUsuario.escribirAPS(usuarios);
 
-                            // Recorre la lista de torres
-                            for (Torre t : torres) {
+                            // Crea una copia de la lista de torres para evitar ConcurrentModificationException
+                            LinkedList<Torre> torresCopy = new LinkedList<>(torres);
+                            for (Torre t : torresCopy) {
                                 // Comprueba si el nombre de usuario asociado a la torre es igual al nombre del usuario actualmente logueado (ignorando mayúsculas y minúsculas)
                                 if (t.getUsuario().equalsIgnoreCase(user.getNombre())) {
                                     // Si hay una coincidencia, elimina la torre de la lista
                                     torres.remove(t);
+                                    System.out.println(t.getUsuario() + " = " + t.getNombre());
                                 }
                             }
 
@@ -307,9 +323,8 @@ public class FuncionesGenerales {
                             // Establece opcMenu en 0 para salir del bucle do-while
                             opcMenu = 0;
                         } catch (ConcurrentModificationException e) {
-                            System.out.println("Parece que los archivos se han daniado");
-                            System.out.println("Elmina los archivos usuarios y torres");
-
+                            System.out.println("Parece que los archivos se han dañado");
+                            System.out.println("Elimina los archivos usuarios y torres");
                         } catch (Exception e) {
                             System.out.println("Se produjo un error al eliminar el usuario: " + e.getMessage());
                         }
@@ -323,7 +338,7 @@ public class FuncionesGenerales {
                     nombreBusqueda = brString("Introduce el nombre del usuario a buscar: ");
                     userBusqueda = buscarLista(usuarios, nombreBusqueda);  // Buscar el Usuario en la lista de usuarios
                     if (userBusqueda == null) {
-                        System.out.println("El usuario "+nombreBusqueda+" no existe :(");
+                        System.out.println("El usuario " + nombreBusqueda + " no existe :(");
                     } else {
                         System.out.println("Datos del usuario " + nombreBusqueda);
                         userBusqueda.toString();
@@ -362,7 +377,8 @@ public class FuncionesGenerales {
                     nombreBusqueda = brString("Introduce el nombre de la torre a eliminar: ");
                     torreBusqueda = buscaLista(torres, nombreBusqueda);  // Buscar la torre en la lista de usuarios
                     if (torreBusqueda == null) {
-                        System.out.println("La torre "+nombreBusqueda+" no existe :(");
+                        System.out.println("");
+                        System.out.println("La torre " + nombreBusqueda + " no existe :(");
                     } else {
                         if (!"TorreAdmin".equals(nombreBusqueda)) {
                             try {
@@ -386,6 +402,7 @@ public class FuncionesGenerales {
                                 // Imprime un mensaje indicando que el usuario ha sido eliminado
                                 System.out.println("");
                                 System.out.println("Torre eliminada :(");
+                                torres = leerTorre.leerLista();
 
                             } catch (ConcurrentModificationException e) {
                                 System.out.println("");
@@ -447,4 +464,3 @@ public class FuncionesGenerales {
     }
 
 }
-

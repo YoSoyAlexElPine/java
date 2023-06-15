@@ -3,8 +3,6 @@ package objetos;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Objects;
-
 import funciones.EscritorAPS;
 import funciones.FuncionesGenerales;
 import static funciones.FuncionesGenerales.buscarLista;
@@ -19,23 +17,7 @@ public class Usuario implements Serializable {
     protected int numero = 0;
     protected File usuarios = new File("usuarios");
     protected boolean admin = false, alta;
-
     static boolean login = false;
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Usuario other = (Usuario) obj;
-        return Objects.equals(nombre, other.nombre);
-    }
 
     /**
      * Constructor para Usuario basico
@@ -58,13 +40,18 @@ public class Usuario implements Serializable {
      * @throws IOException
      * @throws InterruptedException
      */
-    public Usuario() throws IOException, InterruptedException {
+    public Usuario() throws IOException, InterruptedException {// Crea un objeto File para el archivo de usuarios
         File file = new File("usuarios");
+
+        // Crea objetos para leer y escribir en el archivo de usuarios
         LectorAPS lec = new LectorAPS(file);
         EscritorAPS es = new EscritorAPS(new File("usuarios"));
+
         String contrasenaAux;
 
+        // Comprueba si el archivo de usuarios existe
         if (!file.exists()) {
+            // Si no existe, escribe el usuario administrador en el archivo
             es.escribirAPS(new Usuario("admin", "admin123+", true), true);
         }
 
@@ -72,14 +59,18 @@ public class Usuario implements Serializable {
         System.out.println("-  Registro De Usuario   - ");
         System.out.println("--------------------------");
         System.out.println();
+
         do {
+            // Solicita el nombre de usuario y verifica si ya está en uso
             nombre = FuncionesGenerales.brString("Nombre: ");
             if (lec.buscar2APS(nombre) != null) {
-                System.out.println("Este nombre ya esta cogido.");
+                System.out.println("Este nombre ya está cogido.");
                 System.out.println("Intenta otro Nombre.");
             }
         } while (lec.buscar2APS(nombre) != null);
+
         do {
+            // Solicita la contraseña y verifica si cumple con los requisitos de seguridad
             contrasenaAux = FuncionesGenerales.brString("Contrasena: ");
             if (!contrasenaAux.matches(FuncionesGenerales.FUERTE)) {
                 System.out.println("");
@@ -92,13 +83,13 @@ public class Usuario implements Serializable {
         this.contrasena = contrasenaAux;
 
         do {
+            // Solicita y valida el correo electrónico
             this.email = FuncionesGenerales.brString("Email: ");
             if (FuncionesGenerales.validarEmail(this.email) == false) {
                 System.out.println();
-                System.out.println("Porfavor, introduce un email valido");
+                System.out.println("Por favor, introduce un email válido");
                 System.out.println("");
                 Thread.sleep(1000);
-
             }
         } while (FuncionesGenerales.validarEmail(this.email) == false);
 
@@ -106,6 +97,7 @@ public class Usuario implements Serializable {
 
         Thread.sleep(1000);
 
+        // Escribe los datos del usuario en el archivo
         es.escribirAPS(this, false);
 
         System.out.println();
@@ -116,6 +108,7 @@ public class Usuario implements Serializable {
         System.out.println("- Ya puedes logearte con tu usuario -");
         System.out.println();
         Thread.sleep(2000);
+
     }
 
     /**
@@ -169,19 +162,18 @@ public class Usuario implements Serializable {
             es.escribirAPS(admin, true);
 
         }
-        FuncionesGenerales.userAdmin=admin;
+        FuncionesGenerales.userAdmin = admin;
 
         nombre = FuncionesGenerales.brString("Nombre: ");
-     
-        
+
         Usuario user = lec.buscarAPS(nombre);
 
         if (user == null) {
-               System.out.println("");
+            System.out.println("");
             System.out.println("Usuario no encontrado");
             System.out.println("Asegurate de escribir bien el nombre o haberse resgistrado previamente");
             System.out.println();
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } else {
             do {
                 contrasena = FuncionesGenerales.brString("Contrasena: ");
@@ -196,8 +188,8 @@ public class Usuario implements Serializable {
                     System.out.println("Contrasena incorrecta.");
                     System.out.println("");
                     retorno = false;
+                    Thread.sleep(1000);
                 }
-                Thread.sleep(1000);
             } while (retorno == false && intentos > 0);
             if (retorno == false && !"admin".equals(user.getNombre())) {
 
@@ -321,7 +313,7 @@ public class Usuario implements Serializable {
         System.out.println("Contrasena: " + contrasena);
         System.out.println("email: " + email);
         System.out.println("Numero: " + numero);
-        System.out.println("Alta: "+alta);
+        System.out.println("Alta: " + alta);
         System.out.println();
     }
 
